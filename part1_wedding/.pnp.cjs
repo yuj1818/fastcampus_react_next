@@ -56,6 +56,7 @@ const RAW_RUNTIME_STATE =
           ["react-dom", "virtual:efe1763f48a1a789144d819afe97cffa3346ee2f464e9c7652b26290d830b9a3e90e5496c21f0ef2e7f8a66e53bc8a549d7f1867c7213cd5156faefbd19468ef#npm:19.1.0"],\
           ["react-scripts", "virtual:efe1763f48a1a789144d819afe97cffa3346ee2f464e9c7652b26290d830b9a3e90e5496c21f0ef2e7f8a66e53bc8a549d7f1867c7213cd5156faefbd19468ef#npm:5.0.1"],\
           ["sass", "npm:1.86.3"],\
+          ["swiper", "npm:9.4.1"],\
           ["typescript", "patch:typescript@npm%3A4.9.5#optional!builtin<compat/typescript>::version=4.9.5&hash=289587"],\
           ["web-vitals", "npm:2.1.4"]\
         ],\
@@ -14059,6 +14060,7 @@ const RAW_RUNTIME_STATE =
           ["react-dom", "virtual:efe1763f48a1a789144d819afe97cffa3346ee2f464e9c7652b26290d830b9a3e90e5496c21f0ef2e7f8a66e53bc8a549d7f1867c7213cd5156faefbd19468ef#npm:19.1.0"],\
           ["react-scripts", "virtual:efe1763f48a1a789144d819afe97cffa3346ee2f464e9c7652b26290d830b9a3e90e5496c21f0ef2e7f8a66e53bc8a549d7f1867c7213cd5156faefbd19468ef#npm:5.0.1"],\
           ["sass", "npm:1.86.3"],\
+          ["swiper", "npm:9.4.1"],\
           ["typescript", "patch:typescript@npm%3A4.9.5#optional!builtin<compat/typescript>::version=4.9.5&hash=289587"],\
           ["web-vitals", "npm:2.1.4"]\
         ],\
@@ -17499,6 +17501,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["ssr-window", [\
+      ["npm:4.0.2", {\
+        "packageLocation": "../../../AppData/Local/Yarn/Berry/cache/ssr-window-npm-4.0.2-01f9c0151e-10c0.zip/node_modules/ssr-window/",\
+        "packageDependencies": [\
+          ["ssr-window", "npm:4.0.2"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["ssri", [\
       ["npm:12.0.0", {\
         "packageLocation": "../../../AppData/Local/Yarn/Berry/cache/ssri-npm-12.0.0-97c0e53d2e-10c0.zip/node_modules/ssri/",\
@@ -17959,6 +17970,16 @@ const RAW_RUNTIME_STATE =
           ["picocolors", "npm:1.1.1"],\
           ["stable", "npm:0.1.8"],\
           ["svgo", "npm:2.8.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["swiper", [\
+      ["npm:9.4.1", {\
+        "packageLocation": "../../../AppData/Local/Yarn/Berry/cache/swiper-npm-9.4.1-38d46d35a3-10c0.zip/node_modules/swiper/",\
+        "packageDependencies": [\
+          ["ssr-window", "npm:4.0.2"],\
+          ["swiper", "npm:9.4.1"]\
         ],\
         "linkType": "HARD"\
       }]\
