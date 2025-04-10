@@ -43,6 +43,8 @@ export default [
           endOfLine: 'auto',
         },
       ],
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': 'warn',
     },
     settings: {
       react: {
