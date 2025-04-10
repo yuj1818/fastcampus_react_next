@@ -3,6 +3,7 @@ import classNames from 'classnames/bind';
 import styles from './ImageGallery.module.scss';
 import Section from '@shared/Section';
 import ImageViewer from '../ImageViewer';
+import generateImageUrl from '@/utils/generateImageUrl';
 
 const cx = classNames.bind(styles);
 
@@ -29,7 +30,24 @@ function ImageGallery({ images }: { images: string[] }) {
               className={cx('wrap-image')}
               onClick={() => handleSelectedImage(idx)}
             >
-              <img src={`/assets/images/${src}.jpg`} alt="사진첩 이미지" />
+              <picture>
+                <source
+                  srcSet={generateImageUrl({
+                    filename: src,
+                    format: 'webp',
+                    option: 'w_240,h_240,q_auto,c_fill',
+                  })}
+                  type="image/webp"
+                />
+                <img
+                  src={generateImageUrl({
+                    filename: src,
+                    format: 'jpg',
+                    option: 'w_240,h_240,q_auto,c_fill',
+                  })}
+                  alt="이미지"
+                />
+              </picture>
             </li>
           ))}
         </ul>
