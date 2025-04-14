@@ -60,6 +60,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "globals": "^16.0.0",
     "json-server": "^1.0.0-beta.3",
-    "prettier": "^3.5.3"
+    "prettier": "^3.5.3",
+    "webpack-font-preload-plugin": "^1.5.0"
   }
 }

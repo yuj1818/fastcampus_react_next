@@ -1,7 +1,9 @@
 @font-face {
   font-family: 'Grandpa_sharing';
-  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/naverfont_05@1.0/Grandpa_sharing.woff')
-    format('woff');
+  src:
+    url('../assets/fonts/subset-NanumHarABeoJiEuiNaNum.woff2') format('woff2'),
+    url('../assets/fonts/subset-NanumHarABeoJiEuiNaNum.woff') format('woff');
   font-weight: normal;
   font-style: normal;
+  font-display: fallback;
 }
