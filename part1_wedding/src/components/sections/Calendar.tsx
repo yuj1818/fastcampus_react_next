@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import classNames from 'classnames/bind';
 import Section from '@shared/Section';
 import styles from './Calendar.module.scss';
@@ -67,4 +67,4 @@ function Calendar({ date }: { date: string }) {
   );
 }
 
-export default Calendar;
+export default memo(Calendar);
