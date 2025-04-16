@@ -6883,13 +6883,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-emotion@npm:^11.0.0":
-  version: 11.0.0
-  resolution: "eslint-plugin-emotion@npm:11.0.0"
-  checksum: 10c0/6c98a32a3fff9cb3bcf3b7bad61923c77a232ad56d051eaec97266f1a4eb627ea9f0efd69f98dcfec0088afdfd907f26eb955953c7578e7fd67d4d7567956477
-  languageName: node
-  linkType: hard
-
 "eslint-plugin-flowtype@npm:^8.0.3":
   version: 8.0.3
   resolution: "eslint-plugin-flowtype@npm:8.0.3"
@@ -10923,7 +10916,6 @@ __metadata:
     craco-alias: "npm:^3.0.1"
     eslint: "npm:8.57.0"
     eslint-config-prettier: "npm:^10.1.2"
-    eslint-plugin-emotion: "npm:^11.0.0"
     eslint-plugin-prettier: "npm:^5.2.6"
     eslint-plugin-react: "npm:^7.37.5"
     eslint-plugin-react-hooks: "npm:^5.2.0"

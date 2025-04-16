@@ -7,7 +7,6 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 import typescriptEslintPlugin from '@typescript-eslint/eslint-plugin';
 import typescriptEslintParser from '@typescript-eslint/parser';
 import globals from 'globals';
-import eslintPluginEmotion from 'eslint-plugin-emotion';
 
 export default [
   { ignores: ['dist'] },
@@ -18,7 +17,6 @@ export default [
       react: eslintPluginReact,
       'react-hooks': eslintPluginReactHooks,
       prettier: eslintPluginPrettier,
-      emotion: eslintPluginEmotion,
     },
     languageOptions: {
       parser: typescriptEslintParser,
@@ -38,8 +36,8 @@ export default [
       ...eslint.configs.recommended.rules,
       ...eslintPluginReact.configs.recommended.rules,
       ...eslintPluginReactHooks.configs.recommended.rules,
-      ...eslintPluginEmotion.configs.recommended.rules,
       ...eslintConfigPrettier.rules,
+      'react/no-unknown-property': ['error', { ignore: ['css'] }],
       'prettier/prettier': [
         'error',
         {
