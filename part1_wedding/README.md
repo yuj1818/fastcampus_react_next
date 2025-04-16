@@ -5,26 +5,26 @@
 <details>
   <summary>열기</summary>
   <div markdown="1">
+  
+  - Boilerplate
+    - Create React App + Typescript
+  - Rules
+    - EsLint + Prettier
+  - Style
+    - SCSS
+  - Package Manger
+    - Yarn Berry(+ pnp)
+      - 효율적인 의존성 검색
+      - 엄격한 의존성 관리
+      - CI 시간 단축
 
-    - Boilerplate
-      - Create React App + Typescript
-    - Rules
-      - EsLint + Prettier
-    - Style
-      - SCSS
-    - Package Manger
-      - Yarn Berry(+ pnp)
-        - 효율적인 의존성 검색
-        - 엄격한 의존성 관리
-        - CI 시간 단축
+### npm을 쓰지 않는 이유
 
-    ### npm을 쓰지 않는 이유
-
-    - node_modules가 너무 무겁고 복잡함
-    - 의존성 검색이 비효율적
-    - 설치가 비효율적
-      - 각 라이브러리의 의존성 패키지 중 중복되는 것들이 버전이 다를 경우 각각 다른 버전의 똑같은 라이브러리들이 설치됨
-    - 유령 의존성
+- node_modules가 너무 무겁고 복잡함
+- 의존성 검색이 비효율적
+- 설치가 비효율적
+  - 각 라이브러리의 의존성 패키지 중 중복되는 것들이 버전이 다를 경우 각각 다른 버전의 똑같은 라이브러리들이 설치됨
+- 유령 의존성
 
   </div>
 </details>
@@ -1748,7 +1748,7 @@ $modal-zindex: 1001;
 - props가 변경되지 않는 이상 다시 렌더링을 하지 않게 함
 - [참고](https://react.dev/reference/react/memo)
 - React devtools의 Profiler 사용해서 분석해보면 Calendar 컴포넌트에서 부모의 state가 바뀔 때 마다 모든 요소들이 리렌더링 되고 있음
-  ![image.png](attachment:163312e4-400a-484c-b18b-5ee1b65f35ae:image.png)
+  <img src="./image.png" />
 - Calendar에 prop으로 전해지는 date는 동적인 값이 아니라서 계속 리렌더링 될 필요 X
 
   ```tsx
@@ -1797,152 +1797,151 @@ $modal-zindex: 1001;
   - 비어있으면 캐싱
 - [참고](https://react.dev/reference/react/useCallback)
 - open, close 함수를 useCallback 사용하여 캐싱
-    <aside>
-    <img src="./image.png" alt="/icons/forward_blue.svg" width="40px" />
-    
-    ModalContext 컴포넌트가 업데이트 되면서 리렌더링 되어도 해당 함수가 항상 새로 만들어 지지 않음
-    
-    </aside>
-    
-    ```tsx
-    // ModalContext.tsx
-    
-    import Modal from '@shared/Modal';
-    import React, {
-      ComponentProps,
-      createContext,
-      useCallback,
-      useContext,
-      useMemo,
-      useState,
-    } from 'react';
-    import { createPortal } from 'react-dom';
-    
-    type ModalProps = ComponentProps<typeof Modal>;
-    type ModalOptions = Omit<ModalProps, 'open'>;
-    
-    interface ModalContextValue {
-      open: (options: ModalOptions) => void;
-      close: () => void;
+
+  <blockquote>
+    <strong>📌 Tip</strong><br>
+    &nbsp;ModalContext 컴포넌트가 업데이트 되면서 리렌더링 되어도 해당 함수가 항상 새로 만들어 지지 않음
+  </blockquote>
+
+  ```tsx
+  // ModalContext.tsx
+
+  import Modal from '@shared/Modal';
+  import React, {
+    ComponentProps,
+    createContext,
+    useCallback,
+    useContext,
+    useMemo,
+    useState,
+  } from 'react';
+  import { createPortal } from 'react-dom';
+
+  type ModalProps = ComponentProps<typeof Modal>;
+  type ModalOptions = Omit<ModalProps, 'open'>;
+
+  interface ModalContextValue {
+    open: (options: ModalOptions) => void;
+    close: () => void;
+  }
+
+  const Context = createContext<ModalContextValue | undefined>(undefined);
+
+  const defaultValues: ModalProps = {
+    open: false,
+    body: null,
+    onRightBtnClick: () => {},
+    onLeftBtnClick: () => {},
+  };
+
+  export function ModalContext({ children }: { children: React.ReactNode }) {
+    const [modalState, setModalState] = useState<ModalProps>(defaultValues);
+
+    const $portal_root = document.getElementById('root-portal');
+
+    const open = useCallback((options: ModalOptions) => {
+      setModalState({ ...options, open: true });
+    }, []);
+
+    const close = useCallback(() => {
+      setModalState(defaultValues);
+    }, []);
+
+    // open, close는 usecallback에 의해 캐싱되었으므로 ModalContext 컴포넌트가 업데이트되면서 리렌더링 되더라도 해당 함수는 항상 새로 만들어지지 않음
+    const values = useMemo(
+      () => ({
+        open,
+        close,
+      }),
+      [open, close],
+    );
+
+    return (
+      <Context.Provider value={values}>
+        {children}
+        {$portal_root != null
+          ? createPortal(<Modal {...modalState} />, $portal_root)
+          : null}
+      </Context.Provider>
+    );
+  }
+
+  export function useModalContext() {
+    const values = useContext(Context);
+
+    if (values == null) {
+      throw new Error('ModalContext 안에서 사용해주세요');
     }
-    
-    const Context = createContext<ModalContextValue | undefined>(undefined);
-    
-    const defaultValues: ModalProps = {
-      open: false,
-      body: null,
-      onRightBtnClick: () => {},
-      onLeftBtnClick: () => {},
-    };
-    
-    export function ModalContext({ children }: { children: React.ReactNode }) {
-      const [modalState, setModalState] = useState<ModalProps>(defaultValues);
-    
-      const $portal_root = document.getElementById('root-portal');
-    
-      const open = useCallback((options: ModalOptions) => {
-        setModalState({ ...options, open: true });
-      }, []);
-    
-      const close = useCallback(() => {
-        setModalState(defaultValues);
-      }, []);
-    
-      // open, close는 usecallback에 의해 캐싱되었으므로 ModalContext 컴포넌트가 업데이트되면서 리렌더링 되더라도 해당 함수는 항상 새로 만들어지지 않음
-      const values = useMemo(
-        () => ({
-          open,
-          close,
-        }),
-        [open, close],
-      );
-    
-      return (
-        <Context.Provider value={values}>
-          {children}
-          {$portal_root != null
-            ? createPortal(<Modal {...modalState} />, $portal_root)
-            : null}
-        </Context.Provider>
-      );
-    }
-    
-    export function useModalContext() {
-      const values = useContext(Context);
-    
-      if (values == null) {
-        throw new Error('ModalContext 안에서 사용해주세요');
+
+    return values;
+  }
+  ```
+
+  - AttendCountModal의 useEffect 의존성 배열에 open, close를 넣어도 캐싱된 값이기 때문에 무한 루프가 발생하지 않는다.
+
+  ```tsx
+  // AttendCountModal.tsx
+
+  import React, { useEffect, useRef } from 'react';
+  import { useModalContext } from '@contexts/ModalContext';
+  import { Wedding } from '@models/wedding';
+
+  function AttendCountModal({ wedding }: { wedding: Wedding }) {
+    const { open, close } = useModalContext();
+
+    const $input = useRef<HTMLInputElement>(null);
+
+    const haveSeenModal = localStorage.getItem('@have-seen-modal');
+
+    useEffect(() => {
+      console.log('hi');
+      if (haveSeenModal === 'true') {
+        return;
       }
-    
-      return values;
-    }
-    ```
-    
-    - AttendCountModal의 useEffect 의존성 배열에 open, close를 넣어도 캐싱된 값이기 때문에 무한 루프가 발생하지 않는다.
-    
-    ```tsx
-    // AttendCountModal.tsx
-    
-    import React, { useEffect, useRef } from 'react';
-    import { useModalContext } from '@contexts/ModalContext';
-    import { Wedding } from '@models/wedding';
-    
-    function AttendCountModal({ wedding }: { wedding: Wedding }) {
-      const { open, close } = useModalContext();
-    
-      const $input = useRef<HTMLInputElement>(null);
-    
-      const haveSeenModal = localStorage.getItem('@have-seen-modal');
-    
-      useEffect(() => {
-        console.log('hi');
-        if (haveSeenModal === 'true') {
-          return;
-        }
-    
-        open({
-          title: `현재 참석자: ${wedding.attendCount} 명`,
-          body: (
-            <div>
-              <input
-                placeholder="참석 가능 인원을 추가해주세요"
-                style={{ width: '100%', boxSizing: 'border-box' }}
-                ref={$input}
-                type="number"
-              />
-            </div>
-          ),
-          onLeftBtnClick: () => {
-            localStorage.setItem('@have-seen-modal', 'true');
-            close();
-          },
-          onRightBtnClick: async () => {
-            if ($input.current == null) {
-              return;
-            }
-    
-            await fetch('http://localhost:8888/wedding', {
-              method: 'PUT',
-              body: JSON.stringify({
-                ...wedding,
-                attendCount: wedding.attendCount + Number($input.current.value),
-              }),
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            });
-    
-            localStorage.setItem('@have-seen-modal', 'true');
-            close();
-          },
-        });
-      }, [open, close, wedding, haveSeenModal]);
-    
-      return null;
-    }
-    
-    export default AttendCountModal;
-    ```
+
+      open({
+        title: `현재 참석자: ${wedding.attendCount} 명`,
+        body: (
+          <div>
+            <input
+              placeholder="참석 가능 인원을 추가해주세요"
+              style={{ width: '100%', boxSizing: 'border-box' }}
+              ref={$input}
+              type="number"
+            />
+          </div>
+        ),
+        onLeftBtnClick: () => {
+          localStorage.setItem('@have-seen-modal', 'true');
+          close();
+        },
+        onRightBtnClick: async () => {
+          if ($input.current == null) {
+            return;
+          }
+
+          await fetch('http://localhost:8888/wedding', {
+            method: 'PUT',
+            body: JSON.stringify({
+              ...wedding,
+              attendCount: wedding.attendCount + Number($input.current.value),
+            }),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          localStorage.setItem('@have-seen-modal', 'true');
+          close();
+        },
+      });
+    }, [open, close, wedding, haveSeenModal]);
+
+    return null;
+  }
+
+  export default AttendCountModal;
+  ```
 
 ### 로직 추상화 - 렌더링에 집중할 수 있는 컴포넌트 환경 구성
 
@@ -2264,94 +2263,94 @@ root.render(
   - 트리에서 호출하는 컴포넌트 상위의 가장 가까운 Context.Provider에 전달된 값으로 결정됨
   - Context가 변경되면 React는 자동으로 해당 Context를 읽는 컴포넌트를 리렌더링
 
-        ```tsx
-        // index.tsx
+    ```tsx
+    // index.tsx
 
-        import React from 'react';
-        import ReactDOM from 'react-dom/client';
-        import App from './App';
-        import { ModalContext } from '@contexts/ModalContext';
-        import './scss/global.scss';
+    import React from 'react';
+    import ReactDOM from 'react-dom/client';
+    import App from './App';
+    import { ModalContext } from '@contexts/ModalContext';
+    import './scss/global.scss';
 
-        const root = ReactDOM.createRoot(
-          document.getElementById('root') as HTMLElement,
-        );
-        root.render(
-          <React.StrictMode>
-            <ModalContext>
-              <App />
-            </ModalContext>
-          </React.StrictMode>,
-        );
-        ```
+    const root = ReactDOM.createRoot(
+      document.getElementById('root') as HTMLElement,
+    );
+    root.render(
+      <React.StrictMode>
+        <ModalContext>
+          <App />
+        </ModalContext>
+      </React.StrictMode>,
+    );
+    ```
 
-        ```tsx
-        // ModalContext.tsx
+    ```tsx
+    // ModalContext.tsx
 
-        import Modal from '@shared/Modal';
-        import React, {
-          ComponentProps,
-          createContext,
-          useContext,
-          useState,
-        } from 'react';
-        import { createPortal } from 'react-dom';
+    import Modal from '@shared/Modal';
+    import React, {
+      ComponentProps,
+      createContext,
+      useContext,
+      useState,
+    } from 'react';
+    import { createPortal } from 'react-dom';
 
-        type ModalProps = ComponentProps<typeof Modal>;
-        type ModalOptions = Omit<ModalProps, 'open'>;
+    type ModalProps = ComponentProps<typeof Modal>;
+    type ModalOptions = Omit<ModalProps, 'open'>;
 
-        interface ModalContextValue {
-          open: (options: ModalOptions) => void;
-          close: () => void;
-        }
+    interface ModalContextValue {
+      open: (options: ModalOptions) => void;
+      close: () => void;
+    }
 
-        const Context = createContext<ModalContextValue | undefined>(undefined);
+    const Context = createContext<ModalContextValue | undefined>(undefined);
 
-        const defaultValues: ModalProps = {
-          open: false,
-          body: null,
-          onRightBtnClick: () => {},
-          onLeftBtnClick: () => {},
-        };
+    const defaultValues: ModalProps = {
+      open: false,
+      body: null,
+      onRightBtnClick: () => {},
+      onLeftBtnClick: () => {},
+    };
 
-        export function ModalContext({ children }: { children: React.ReactNode }) {
-          const [modalState, setModalState] = useState<ModalProps>(defaultValues);
+    export function ModalContext({ children }: { children: React.ReactNode }) {
+      const [modalState, setModalState] = useState<ModalProps>(defaultValues);
 
-          const $portal_root = document.getElementById('root-portal');
+      const $portal_root = document.getElementById('root-portal');
 
-          const open = (options: ModalOptions) => {
-            setModalState({ ...options, open: true });
-          };
+      const open = (options: ModalOptions) => {
+        setModalState({ ...options, open: true });
+      };
 
-          const close = () => {
-            setModalState(defaultValues);
-          };
+      const close = () => {
+        setModalState(defaultValues);
+      };
 
-          const values = {
-            open,
-            close,
-          };
+      const values = {
+        open,
+        close,
+      };
 
-          return (
-            <Context.Provider value={values}>
-              {children}
-              {$portal_root != null
-                ? createPortal(<Modal {...modalState} />, $portal_root)
-                : null}
-            </Context.Provider>
-          );
-        }
+      return (
+        <Context.Provider value={values}>
+          {children}
+          {$portal_root != null
+            ? createPortal(<Modal {...modalState} />, $portal_root)
+            : null}
+        </Context.Provider>
+      );
+    }
 
-        export function useModalContext() {
-          const values = useContext(Context);
+    export function useModalContext() {
+      const values = useContext(Context);
 
-          if (values == null) {
-            throw new Error('ModalContext 안에서 사용해주세요');
-          }
+      if (values == null) {
+        throw new Error('ModalContext 안에서 사용해주세요');
+      }
 
-          return values;
-        }
-        ```
+      return values;
+    }
+    ```
 
     </div>
     </details>
