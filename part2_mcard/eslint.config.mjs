@@ -39,6 +39,7 @@ export default [
       ...eslintPluginReactHooks.configs.recommended.rules,
       ...eslintConfigPrettier.rules,
       'react/no-unknown-property': ['error', { ignore: ['css'] }],
+      'react/react-in-jsx-scope': 'off',
       'prettier/prettier': [
         'error',
         {
