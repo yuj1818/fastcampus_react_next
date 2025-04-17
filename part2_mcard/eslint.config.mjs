@@ -34,6 +34,7 @@ export default [
     },
     rules: {
       ...eslint.configs.recommended.rules,
+      ...typescriptEslintPlugin.configs.recommended.rules,
       ...eslintPluginReact.configs.recommended.rules,
       ...eslintPluginReactHooks.configs.recommended.rules,
       ...eslintConfigPrettier.rules,
