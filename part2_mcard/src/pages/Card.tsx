@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { css } from '@emotion/react';
+import { motion } from 'framer-motion';
 import { getCard } from '@remote/card';
 import Top from '@shared/Top';
 import ListRow from '@shared/ListRow';
@@ -30,13 +31,24 @@ function CardPage() {
       <ul>
         {benefit.map((text, idx) => {
           return (
-            <ListRow
+            <motion.li
               key={text}
-              left={<IconCheck />}
-              contents={
-                <ListRow.Texts title={`혜택 ${idx + 1}`} subTitle={text} />
-              }
-            />
+              initial={{ opacity: 0, translateX: -90 }}
+              transition={{
+                duration: 0.7,
+                ease: 'easeInOut',
+                delay: idx * 0.1,
+              }}
+              animate={{ opacity: 1, translateX: 0 }}
+            >
+              <ListRow
+                as="div"
+                left={<IconCheck />}
+                contents={
+                  <ListRow.Texts title={`혜택 ${idx + 1}`} subTitle={text} />
+                }
+              />
+            </motion.li>
           );
         })}
       </ul>
