@@ -2,6 +2,7 @@ import { useInfiniteQuery } from 'react-query';
 import { getCards } from '@remote/card';
 import { flatten } from 'lodash';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { useNavigate } from 'react-router-dom';
 import ListRow from '@shared/ListRow';
 import { useCallback } from 'react';
 import Badge from '@shared/Badge';
@@ -15,6 +16,8 @@ function CardList() {
   } = useInfiniteQuery(['cards'], ({ pageParam }) => getCards(pageParam), {
     getNextPageParam: (snapshot) => snapshot.lastVisible,
   });
+
+  const navigate = useNavigate();
 
   // 패치 중이거나 다음 페이지가 없으면 아무것도 하지 않음
   const loadMore = useCallback(() => {
@@ -52,6 +55,9 @@ function CardList() {
                   card.payback != null ? <Badge label={card.payback} /> : null
                 }
                 withArrow={true}
+                onClick={() => {
+                  navigate(`/card/${card.id}`);
+                }}
               />
             );
           })}
