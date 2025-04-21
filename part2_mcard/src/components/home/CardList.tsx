@@ -4,6 +4,7 @@ import { flatten } from 'lodash';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import ListRow from '@shared/ListRow';
 import { useCallback } from 'react';
+import Badge from '@shared/Badge';
 
 function CardList() {
   const {
@@ -37,19 +38,24 @@ function CardList() {
         hasMore={hasNextPage}
         loader={<></>}
         next={loadMore}
+        scrollThreshold="100px"
       >
-        {cards.map((card, idx) => {
-          return (
-            <ListRow
-              key={card.id}
-              contents={
-                <ListRow.Texts title={`${idx + 1}위`} subTitle={card.name} />
-              }
-              right={card.payback != null ? <div>{card.payback}</div> : null}
-              withArrow={true}
-            />
-          );
-        })}
+        <ul>
+          {cards.map((card, idx) => {
+            return (
+              <ListRow
+                key={card.id}
+                contents={
+                  <ListRow.Texts title={`${idx + 1}위`} subTitle={card.name} />
+                }
+                right={
+                  card.payback != null ? <Badge label={card.payback} /> : null
+                }
+                withArrow={true}
+              />
+            );
+          })}
+        </ul>
       </InfiniteScroll>
     </div>
   );
