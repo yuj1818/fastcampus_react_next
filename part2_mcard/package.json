@@ -24,6 +24,7 @@
     "react-scripts": "5.0.1",
     "swiper": "9",
     "typescript": "^4.4.2",
+    "validator": "^13.15.0",
     "web-vitals": "^2.1.0"
   },
   "scripts": {
@@ -52,6 +53,7 @@
     "@emotion/babel-plugin": "^11.13.5",
     "@eslint/js": "^9.24.0",
     "@types/lodash": "^4.17.16",
+    "@types/validator": "^13",
     "@typescript-eslint/eslint-plugin": "^8.30.1",
     "@typescript-eslint/parser": "^8.30.1",
     "craco-alias": "^3.0.1",
