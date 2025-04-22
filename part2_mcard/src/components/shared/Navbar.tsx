@@ -13,7 +13,7 @@ function Navbar() {
     <Flex justify="space-between" align="center" css={navbarContainerStyles}>
       <Link to="/">홈</Link>
       {showSignButton ? (
-        <Link to="/signup">
+        <Link to="/signin">
           <Button>로그인/회원가입</Button>
         </Link>
       ) : null}
