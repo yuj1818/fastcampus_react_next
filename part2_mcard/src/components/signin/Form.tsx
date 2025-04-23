@@ -10,7 +10,7 @@ import { colors } from '@styles/colorPalette';
 import validator from 'validator';
 import { FormValues } from '@models/signin';
 
-function Form() {
+function Form({ onSubmit }: { onSubmit: (formValues: FormValues) => void }) {
   const [formValues, setFormValues] = useState({
     email: '',
     password: '',
@@ -45,7 +45,11 @@ function Form() {
         value={formValues.password}
       />
       <Spacing size={32} />
-      <Button size="medium" disabled={!isValid}>
+      <Button
+        size="medium"
+        disabled={!isValid}
+        onClick={() => onSubmit(formValues)}
+      >
         로그인
       </Button>
       <Spacing size={12} />

@@ -5,8 +5,11 @@ import { FormValues } from '@models/signup';
 
 import { auth, store } from '@remote/firebase';
 import { COLLECTIONS } from '@constants';
+import { useNavigate } from 'react-router-dom';
 
 function SignupPage() {
+  const navigate = useNavigate();
+
   const handleSubmit = async (formValues: FormValues) => {
     const { email, password, name } = formValues;
     const { user } = await createUserWithEmailAndPassword(
@@ -25,6 +28,8 @@ function SignupPage() {
     };
 
     await setDoc(doc(collection(store, COLLECTIONS.USER), user.uid), newUser);
+
+    navigate('/');
   };
 
   return (
