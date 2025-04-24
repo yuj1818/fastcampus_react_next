@@ -1,35 +1,17 @@
-import { ApplyValues } from '@models/apply';
-import BasicInfo from '@components/apply/BasicInfo';
-import CardInfo from '@components/apply/CardInfo';
-import Terms from '@components/apply/Terms';
-import { useState } from 'react';
+import Apply from '@components/apply';
+import useApplyCardMutation from '@components/apply/hooks/useApplyCardMutation';
 
 function ApplyPage() {
-  const [step, setStep] = useState(2);
+  const { mutate } = useApplyCardMutation({
+    onSuccess: () => {
+      // 값이 추가되었을 때 => 폴링 시작
+    },
+    onError: () => {
+      window.history.back();
+    },
+  });
 
-  const handleTermsChange = (terms: ApplyValues['terms']) => {
-    console.log(terms);
-  };
-
-  const handleBasicInfoChange = (
-    infoValues: Pick<ApplyValues, 'salary' | 'creditScore' | 'payDate'>,
-  ) => {
-    console.log(infoValues);
-  };
-
-  const handleCardInfoChange = (
-    cardInfoValues: Pick<ApplyValues, 'isHipass' | 'isMaster' | 'isRf'>,
-  ) => {
-    console.log(cardInfoValues);
-  };
-
-  return (
-    <div>
-      {step === 0 ? <Terms onNext={handleTermsChange} /> : null}
-      {step === 1 ? <BasicInfo onNext={handleBasicInfoChange} /> : null}
-      {step === 2 ? <CardInfo onNext={handleCardInfoChange} /> : null}
-    </div>
-  );
+  return <Apply onSubmit={mutate} />;
 }
 
 export default ApplyPage;
