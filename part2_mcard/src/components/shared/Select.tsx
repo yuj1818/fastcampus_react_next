@@ -15,6 +15,7 @@ const BaseSelect = styled.select`
   height: 52px;
   background-color: ${colors.grey};
   border: none;
+  border-right: 16px solid transparent;
   border-radius: 16px;
   padding: 0 16px;
   cursor: pointer;
@@ -32,6 +33,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select(
     <Flex direction="column">
       <Text
         typography="t7"
+        bold={true}
         color="black"
         display="inline-block"
         style={{ marginBottom: 6 }}

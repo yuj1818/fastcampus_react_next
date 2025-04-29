@@ -81,6 +81,10 @@ function CardPage() {
         </Flex>
       ) : null}
 
+      {/* <Spacing size={80} />
+      <Review />
+      <Spacing size={100} /> */}
+
       <FixedBottomButton
         label="1분만에 신청하고 혜택받기"
         onClick={moveToApply}

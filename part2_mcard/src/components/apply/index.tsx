@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import useUser from '@hooks/auth/useUser';
 import { useParams } from 'react-router-dom';
 import ProgressBar from '@shared/ProgressBar';
+import { css } from '@emotion/react';
+import Flex from '@shared/Flex';
 
 const LAST_STEP = 3;
 
@@ -76,7 +78,7 @@ function Apply({
   };
 
   return (
-    <div>
+    <Flex direction="column" css={ContainerStyles}>
       <ProgressBar progress={(applyValues.step as number) / LAST_STEP} />
       {applyValues.step === 0 ? <Terms onNext={handleTermsChange} /> : null}
       {applyValues.step === 1 ? (
@@ -85,8 +87,14 @@ function Apply({
       {applyValues.step === 2 ? (
         <CardInfo onNext={handleCardInfoChange} />
       ) : null}
-    </div>
+    </Flex>
   );
 }
+
+const ContainerStyles = css`
+  margin-top: 20px;
+  padding: 0 24px 80px 24px;
+  gap: 16px;
+`;
 
 export default Apply;

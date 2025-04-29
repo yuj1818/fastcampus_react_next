@@ -52,7 +52,9 @@ function AgreementDescription({
       </Flex>
       {link != null ? (
         <a href={link} target="_blank" rel="noreferrer">
-          <Text typography="t6">링크</Text>
+          <Text typography="t7" color="blue">
+            보기
+          </Text>
         </a>
       ) : null}
     </Flex>
@@ -92,7 +94,8 @@ function IconCheck({
 }
 
 const AgreementContainerStyles = css`
-  padding: 24px;
+  padding: 8px;
+  gap: 6px;
 
   & li {
     cursor: pointer;

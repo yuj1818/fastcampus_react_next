@@ -3,6 +3,7 @@ import Select from '@shared/Select';
 import FixedBottomButton from '@shared/FixedBottomButton';
 import { 연소득옵션, 신용점수옵션, 결제일옵션 } from '@constants/apply';
 import { ApplyValues } from '@models/apply';
+import Spacing from '@shared/Spacing';
 
 type InfoValues = Pick<ApplyValues, 'salary' | 'creditScore' | 'payDate'>;
 
@@ -32,6 +33,7 @@ function BasicInfo({ onNext }: { onNext: (infoValues: InfoValues) => void }) {
         onChange={handleInfoChange}
         name="salary"
       />
+      <Spacing size={12} />
       <Select
         label="신용점수"
         options={신용점수옵션}
@@ -40,6 +42,7 @@ function BasicInfo({ onNext }: { onNext: (infoValues: InfoValues) => void }) {
         onChange={handleInfoChange}
         name="creditScore"
       />
+      <Spacing size={12} />
       <Select
         label="결제일"
         options={결제일옵션}
