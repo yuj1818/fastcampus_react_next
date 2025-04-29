@@ -4,7 +4,6 @@
 
 <details>
   <summary>열기</summary>
-  <div markdown="1">
 
   ### Firebase
 
@@ -70,14 +69,12 @@
           
           ```
         
-  </div>
 </details>
 
 ## Emotion 설정
 
 <details>
 <summary>열기</summary>
-  <div markdown="1">
 
   ### CSS in JS
 
@@ -251,14 +248,12 @@
       
       export default App;
       ```
-  </div>
 </details>
 
 ## 스타일 설정 예시(emotion)
 
 <details>
 <summary>열기</summary>
-  <div markdown="1">
 
   ### 컬러 팔레트 설정
 
@@ -364,14 +359,12 @@
   - 백틱(`) 사용하면 vscode에서 자동 완성이 안 됨
   - 객체 문법 사용해서 자동 완성 가능하게 만들 수 있음
 
-  </div>
 </details>
 
 ## mock 데이터 firestore에 저장
 
 <details>
 <summary>열기</summary>
-  <div markdown="1">
 
   - CARD라는 컬렉션에 card_list를 순회하면서 카드 데이터를 저장
       - 한꺼번에 처리하기 위해 writeBatch 사용
@@ -405,16 +398,16 @@
   export default CardListAddButton;
   ```
 
-  <img src='./images/store.png' width="45%" />
-
+  <div align="center">
+    <img src='./images/store.png' width="50%" />
   </div>
+
 </details>
 
 ## firestore 데이터 불러오기
 
 <details>
 <summary>열기</summary>
-  <div markdown="1">
 
   - getDocs 함수 사용하여 원하는 컬렉션의 데이터들을 불러올 수 있음
       - 비동기 함수이므로 async/await 사용
@@ -534,14 +527,12 @@
   export default CardList;
   ```
 
-  </div>
 </details>
 
 ## `useInfiniteQuery`를 사용한 페이지네이션
 
 <details>
 <summary>열기</summary>
-  <div markdown="1">
 
   - 각 페이지의 마지막 요소에 cursor를 줘서 무한 스크롤 기능을 구현
       - pageParam이 지금 보이고 있는 맨 마지막 요소
@@ -663,14 +654,12 @@
           
           export default CardList;
           ```
-  </div>
 </details>
 
 ## 애니메이션 구현(keyframes, framer-motion)
 
 <details>
 <summary>열기</summary>
-  <div markdown="1">
 
   ### keyframes 사용
 
@@ -737,14 +726,12 @@
       </ul>
       ```
   
-  </div>
 </details>
 
 ## 회원 가입 구현
 
 <details>
 <summary>열기</summary>
-  <div markdown="1">
 
   ### input value 관리
 
@@ -1002,14 +989,12 @@
 
   ```
 
-  </div>
 </details>
 
 ## 전역 상태 관리
 
 <details>
 <summary>열기</summary>
-  <div markdown="1">
 
   ### 전역 상태 관리가 필요한 경우
 
@@ -1099,14 +1084,12 @@
   export default AuthGuard;
   ```
 
-  </div>
 </details>
 
 ## 로그인 구현
 
 <details>
 <summary>열기</summary>
-  <div markdown="1">
 
   ### 로그인
 
@@ -1245,14 +1228,12 @@
       
       export default SigninPage;
       ```
-  </div>
 </details>
 
 ## 카드 신청
 
 <details>
 <summary>열기</summary>
-  <div markdown="1">
 
   ### Polling 방식으로 완료 여부 받아오기
 
@@ -1407,7 +1388,6 @@
   export default ApplyPage;
   ```
 
-  </div>
 </details>
 
 ## 마이페이지(storage ⇒ cloudinary)
@@ -1582,8 +1562,9 @@
     ```
     
 - 개발자 도구의 성능 탭에서 Layout Shift가 어느 시점에 나타나는지 확인할 수 있음
-    
-    <img src='./images/layout_shift.png' width="45%" />
+    <div align="center">
+      <img src='./images/layout_shift.png' width="50%" />
+    </div>
 
 ### 병목 코드 제거
 
