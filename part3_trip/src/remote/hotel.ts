@@ -8,8 +8,9 @@ import {
 } from 'firebase/firestore';
 import { COLLECTIONS } from '@constants';
 import { store } from './firebase';
+import { Hotel } from '@models/hotel';
 
-export async function getHotels(pageParams?: QuerySnapshot<unknown>) {
+export async function getHotels(pageParams?: QuerySnapshot<Hotel>) {
   const hotelQuery =
     pageParams == null
       ? query(collection(store, COLLECTIONS.HOTEL), limit(10))
@@ -21,10 +22,13 @@ export async function getHotels(pageParams?: QuerySnapshot<unknown>) {
 
   const hotelSnapshot = await getDocs(hotelQuery);
 
-  const items = hotelSnapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  }));
+  const items = hotelSnapshot.docs.map(
+    (doc) =>
+      ({
+        id: doc.id,
+        ...doc.data(),
+      }) as Hotel,
+  );
 
   const lastVisible = hotelSnapshot.docs[hotelSnapshot.docs.length - 1];
 

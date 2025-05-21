@@ -15,7 +15,7 @@ function HotelListAddButton() {
     const hotels = HOTEL_NAMES.map((hotelName, idx) => {
       return {
         name: hotelName,
-        mainImage: IMAGES[Math.floor(Math.random() * IMAGES.length)],
+        mainImageUrl: IMAGES[Math.floor(Math.random() * IMAGES.length)],
         images: IMAGES,
         price: random(130000, 200000),
         starRating: random(1, 5),
