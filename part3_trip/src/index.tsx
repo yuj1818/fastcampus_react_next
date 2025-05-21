@@ -4,6 +4,15 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Global } from '@emotion/react';
 import globalStyles from '@styles/globalStyles';
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+const client = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 0,
+    },
+  },
+});
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -11,7 +20,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Global styles={globalStyles} />
-    <App />
+    <QueryClientProvider client={client}>
+      <App />
+    </QueryClientProvider>
   </React.StrictMode>,
 );
 

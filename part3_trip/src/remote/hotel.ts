@@ -1,0 +1,32 @@
+import {
+  QuerySnapshot,
+  collection,
+  limit,
+  query,
+  getDocs,
+  startAfter,
+} from 'firebase/firestore';
+import { COLLECTIONS } from '@constants';
+import { store } from './firebase';
+
+export async function getHotels(pageParams?: QuerySnapshot<unknown>) {
+  const hotelQuery =
+    pageParams == null
+      ? query(collection(store, COLLECTIONS.HOTEL), limit(10))
+      : query(
+          collection(store, COLLECTIONS.HOTEL),
+          startAfter(pageParams),
+          limit(10),
+        );
+
+  const hotelSnapshot = await getDocs(hotelQuery);
+
+  const items = hotelSnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  const lastVisible = hotelSnapshot.docs[hotelSnapshot.docs.length - 1];
+
+  return { items, lastVisible };
+}
