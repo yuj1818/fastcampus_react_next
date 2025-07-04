@@ -4,19 +4,29 @@ import { Link, useLocation } from 'react-router-dom';
 import Button from '@shared/Button';
 import { colors } from '@styles/colorPalette';
 import { useCallback } from 'react';
+import useUser from '@hooks/auth/useUser';
 
 function Navbar() {
   const location = useLocation();
   const showSignButton =
     ['/signup', '/signin'].includes(location.pathname) === false;
 
-  const user = null;
+  const user = useUser();
 
   const renderButton = useCallback(() => {
     if (user != null) {
       return (
         <Link to="/my">
-          <img src="" alt="" />
+          <img
+            src={
+              user.photoUrl ??
+              'https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-128.png'
+            }
+            alt="유저 프로필 이미지"
+            width={40}
+            height={40}
+            style={{ borderRadius: '100%' }}
+          />
         </Link>
       );
     }
