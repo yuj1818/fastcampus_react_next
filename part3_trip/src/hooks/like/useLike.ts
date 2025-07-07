@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { getLikes, toggleLike } from '@remote/like';
 import useUser from '@hooks/auth/useUser';
 import { Hotel } from '@models/hotel';
@@ -9,6 +9,7 @@ function useLike() {
   const user = useUser();
   const { open } = useAlertContext();
   const navigate = useNavigate();
+  const client = useQueryClient();
 
   const { data } = useQuery(
     ['likes'],
@@ -26,6 +27,9 @@ function useLike() {
       return toggleLike({ hotel, userId: user.uid });
     },
     {
+      onSuccess: () => {
+        client.invalidateQueries(['likes']);
+      },
       onError: (e: Error) => {
         if (e.message === '로그인필요') {
           open({
