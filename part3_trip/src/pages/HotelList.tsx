@@ -5,6 +5,7 @@ import Spacing from '@shared/Spacing';
 import { Fragment } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import useLike from '@hooks/like/useLike';
+import withSuspense from '@shared/hocs/withSuspense';
 
 function HotelList() {
   const { data: hotels, hasNextPage, loadMore } = useHotels();
@@ -45,4 +46,6 @@ function HotelList() {
   );
 }
 
-export default HotelList;
+export default withSuspense(HotelList, {
+  fallback: <div>호텔리스트 불러오는중...</div>,
+});

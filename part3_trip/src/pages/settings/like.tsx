@@ -4,12 +4,30 @@ import {
   DragDropContext,
   Droppable,
   Draggable,
-  DraggableProps,
   DropResult,
   DroppableProps,
 } from 'react-beautiful-dnd';
 import { useEffect, useState } from 'react';
 import useEditLike from '@components/settings/like/hooks/useEditLike';
+import { Like } from '@models/like';
+import { Virtuoso } from 'react-virtuoso';
+
+function generateMocks() {
+  const mocks = [];
+
+  for (let i = 0; i < 1000; i += 1) {
+    mocks.push({
+      id: `${i}`,
+      hotelId: `hotel ${i}`,
+      hotelName: `hotel ${i}`,
+      hotelMainImageUrl: `hotel ${i}`,
+      userId: '',
+      order: i,
+    } as Like);
+  }
+
+  return mocks;
+}
 
 function LikePage() {
   const { data, isEdit, reorder, save } = useEditLike();
@@ -25,6 +43,8 @@ function LikePage() {
     reorder(from, to);
   };
 
+  const mocks = generateMocks();
+
   return (
     <div>
       <DragDropContext onDragEnd={handleDragEndDrop}>
@@ -34,29 +54,38 @@ function LikePage() {
               ref={droppableProps.innerRef}
               {...droppableProps.droppableProps}
             >
-              {data?.map((like, index) => {
-                return (
-                  <Draggable key={like.id} draggableId={like.id} index={index}>
-                    {(draggableProps) => (
-                      <li
-                        ref={draggableProps.innerRef}
-                        {...draggableProps.draggableProps}
-                        {...draggableProps.dragHandleProps}
-                      >
-                        <ListRow
-                          as="div"
-                          contents={
-                            <ListRow.Texts
-                              title={like.order}
-                              subTitle={like.hotelName}
-                            />
-                          }
-                        />
-                      </li>
-                    )}
-                  </Draggable>
-                );
-              })}
+              <Virtuoso
+                useWindowScroll
+                increaseViewportBy={0}
+                itemContent={(index, like) => {
+                  return (
+                    <Draggable
+                      key={like.id}
+                      draggableId={like.id}
+                      index={index}
+                    >
+                      {(draggableProps) => (
+                        <li
+                          ref={draggableProps.innerRef}
+                          {...draggableProps.draggableProps}
+                          {...draggableProps.dragHandleProps}
+                        >
+                          <ListRow
+                            as="div"
+                            contents={
+                              <ListRow.Texts
+                                title={like.order}
+                                subTitle={like.hotelName}
+                              />
+                            }
+                          />
+                        </li>
+                      )}
+                    </Draggable>
+                  );
+                }}
+                data={mocks}
+              ></Virtuoso>
             </ul>
           )}
         </StrictModeDroppable>

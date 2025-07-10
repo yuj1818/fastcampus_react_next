@@ -30,10 +30,11 @@ function Summary({
         alt={`${room.roomName}의 이미지`}
         css={imageStyles}
       />
-      <Spacing size={8} />
+      <Spacing size={16} />
       <div>
         <Text bold={true}>{room.roomName}</Text>
-        <ul>
+        <Spacing size={4} />
+        <ul css={listStyles}>
           <Flex as="li" justify="space-between" align="center">
             <Text color="gray600" typography="t6">
               일정
@@ -42,12 +43,14 @@ function Summary({
           </Flex>
           {Object.keys(room.basicInfo).map((key) => {
             if (key in INFO_LABEL_MAP) {
-              <Flex key={key} as="li" justify="space-between" align="center">
-                <Text color="gray600" typography="t6">
-                  {INFO_LABEL_MAP[key as keyof typeof INFO_LABEL_MAP]}
-                </Text>
-                <Text typography="t6">{room.basicInfo[key]}</Text>
-              </Flex>;
+              return (
+                <Flex key={key} as="li" justify="space-between" align="center">
+                  <Text color="gray600" typography="t6">
+                    {INFO_LABEL_MAP[key as keyof typeof INFO_LABEL_MAP]}
+                  </Text>
+                  <Text typography="t6">{room.basicInfo[key]}</Text>
+                </Flex>
+              );
             }
             return null;
           })}
@@ -69,6 +72,12 @@ const imageStyles = css`
   height: 100px;
   object-fit: cover;
   border-radius: 4px;
+`;
+
+const listStyles = css`
+  li:not(last-child) {
+    margin-bottom: 8px;
+  }
 `;
 
 export default Summary;

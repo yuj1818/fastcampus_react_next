@@ -73,10 +73,16 @@ export async function getHotelWithRoom({
   hotelId: string;
   roomId: string;
 }) {
+  console.log(hotelId, roomId);
   const hotelSnapshot = await getDoc(doc(store, COLLECTIONS.HOTEL, hotelId));
   const roomSnapshot = await getDoc(
     doc(hotelSnapshot.ref, COLLECTIONS.ROOM, roomId),
   );
+
+  console.log({
+    hotel: hotelSnapshot.data() as Hotel,
+    room: roomSnapshot.data() as Room,
+  });
 
   return {
     hotel: hotelSnapshot.data() as Hotel,

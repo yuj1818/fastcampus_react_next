@@ -12,6 +12,7 @@ import qs from 'qs';
 import useUser from '@hooks/auth/useUser';
 import { useNavigate } from 'react-router-dom';
 import { useAlertContext } from '@contexts/AlertContext';
+import withSuspense from '@shared/hocs/withSuspense';
 
 function Rooms({ hotelId }: { hotelId: string }) {
   const { data } = useRooms({ hotelId });
@@ -114,4 +115,4 @@ const imageStyles = css`
   border-radius: 4px;
 `;
 
-export default Rooms;
+export default withSuspense(Rooms, { fallback: <div>룸 불러오는 중...</div> });

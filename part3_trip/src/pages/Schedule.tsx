@@ -26,7 +26,7 @@ function SchedulePage() {
 
   useEffect(() => {
     if (hotelId == '' || roomId == '') {
-      window.history.back();
+      navigate(-1);
     }
   }, [roomId, hotelId]);
 

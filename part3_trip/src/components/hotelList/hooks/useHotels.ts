@@ -12,6 +12,7 @@ function useHotels() {
     getNextPageParam: (snapshot) => {
       return snapshot.lastVisible;
     },
+    suspense: true,
   });
 
   const loadMore = useCallback(() => {
