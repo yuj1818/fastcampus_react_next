@@ -747,3 +747,315 @@
       return results;
     }
     ```
+
+## 프로젝트 최적화
+
+### 리소스 캐시
+
+- `캐시`
+    - 자주 사용되는 데이터나 리소스 또는 무거운 연산의 결과등을 빠르게 접근 할 수 있도록 저장해두는 것
+    - 데이터 접근 시간 단축 가능
+    - 서버의 부하/네트워크 비용 절감
+    
+    |  | 메모리 캐시 (RAM) | 디스크 캐시 (하드/SSD) |
+    | --- | --- | --- |
+    | 속도 | 빠름 | RAM 보다 느림 |
+    | 용량 | 작음 | 큼 |
+    | 휘발성 | O | X |
+    | 방문시 | 먼저 확인 | RAM 확인 후 |
+- HTTP 헤더를 통해서 캐시 동작 제어 가능
+    - `no-store`
+        - 캐시를 사용하지 않겠다.
+    - `no-cache`
+        - 리소스를 사용하기 전에 항상 원래의 서버에 재검증을 요청
+    - `public`
+        - 공유 캐시
+        - 중간에 거치는 프록시 서버나 CDN 등에 캐시될 수 있음
+    - `private`
+        - 공유 캐시에 저장되어서는 안됨
+    - `max-age`
+        - 캐시가 유효한 시간
+
+### 코드 스플리팅
+
+- 커다란 번들을 작은 여러 개의 청크로 나누는 과정
+- 유저가 필요하지 않은 코드들을 다운 받지 않도록 함
+- lazy loading 적용 전
+    
+    ![image.png](https://github.com/user-attachments/assets/52a7f7d9-c61c-41c2-873f-95caf0a9739e)
+    
+- lazy loading 적용 후
+    
+    ![image.png](https://github.com/user-attachments/assets/c38ae6da-b3b9-4cca-bc16-feba52c0b407)
+    
+
+### 대용량 리스트
+
+- `virtuoso` 라이브러리 사용
+    - 보이는 요소(사용자의 뷰포트 안에 들어온 요소)만 렌더링
+    - Beautiful DND 사용하여 대용량 찜 목록 Drag&Drop 최적화
+- 코드
+    
+    ```tsx
+    <ul
+      ref={droppableProps.innerRef}
+      {...droppableProps.droppableProps}
+    >
+      <Virtuoso
+        useWindowScroll
+        increaseViewportBy={0}
+        itemContent={(index, like) => {
+          return (
+            <Draggable
+              key={like.id}
+              draggableId={like.id}
+              index={index}
+            >
+              {(draggableProps) => (
+                <li
+                  ref={draggableProps.innerRef}
+                  {...draggableProps.draggableProps}
+                  {...draggableProps.dragHandleProps}
+                >
+                  <ListRow
+                    as="div"
+                    contents={
+                      <ListRow.Texts
+                        title={like.order}
+                        subTitle={like.hotelName}
+                      />
+                    }
+                  />
+                </li>
+              )}
+            </Draggable>
+          );
+        }}
+        data={mocks}
+      ></Virtuoso>
+    </ul>
+    ```
+    
+
+### 애니메이션 최적화
+
+- ProgressBar 구현에서 `setInterval`과 `requestAnimationFrame` 차이
+    - `setInterval`
+        - width 속성을 직접 건드려 레이아웃을 다시 계산하도록 함
+        - 레이아웃을 자주 변경시키면 계산 시간이 오래 걸려 원하는 시간 보다 빠르거나 늦게 실행될 수 있음
+        - 프레임 드랍 발생해 일정하지 않게 증가
+    - `requestAnimationFrame`
+        - 브라우저의 렌더링 주기와 동기화되어 실행
+        - 일정하게 증가
+- 레이아웃 변경이 일어나지 않게 requestAnimationFrame사용하여 tranform으로 progressBar 애니메이션 생성
+    - 코드
+        
+        ```tsx
+        import { useEffect, useState, useRef } from 'react';
+        import { SerializedStyles } from '@emotion/react';
+        import { Colors, colors } from '@styles/colorPalette';
+        
+        function ScrollProgressBar({
+          style,
+          color = 'blue980',
+        }: {
+          style?: SerializedStyles;
+          color?: Colors;
+        }) {
+          const [progress, setProgress] = useState(0);
+          const rafRef = useRef<number | null>(null);
+        
+          useEffect(() => {
+            const scroll = () => {
+              const scrollTop = document.documentElement.scrollTop;
+              const height =
+                document.documentElement.scrollHeight -
+                document.documentElement.clientHeight;
+        
+              if (rafRef.current) {
+                cancelAnimationFrame(rafRef.current);
+              }
+        
+              rafRef.current = requestAnimationFrame(() => {
+                setProgress(scrollTop / height);
+              });
+            };
+        
+            window.addEventListener('scroll', scroll);
+        
+            return () => {
+              if (rafRef.current) {
+                cancelAnimationFrame(rafRef.current);
+              }
+        
+              window.removeEventListener('scroll', scroll);
+            };
+          }, []);
+        
+          return (
+            <div
+              css={style}
+              style={{
+                transform: `scaleX(${progress})`,
+                transformOrigin: 'left',
+                backgroundColor: colors[color],
+                height: 8,
+              }}
+            ></div>
+          );
+        }
+        
+        export default ScrollProgressBar;
+        
+        ```
+        
+
+### 검색엔진 최적화(SEO)
+
+- 우리의 웹사이트가 검색엔진 결과 페이지에서 더 높은 위치를 차지할 수 있도록 그 내용과 구조를 최적화하는 과정
+- 높은 위치를 차지하면 좋은 이유
+    - 더 많은 클릭을 유도
+    - 신뢰성
+    - 경쟁 우위
+- 클라이언트 사이드 렌더링은 우위를 차지하기 어렵기 때문에 보통 SEO는 서버 사이드 렌더링으로 구현하는 것이 일반적
+    - 클라이언트 사이드 렌더링에서는 메타 태그를 추가적으로 넣음으로써 최소한의 SEO 가능
+- `react-helmet-async` 라이브러리 사용하여 동적으로 헤드의 메타 태그를 변경
+    - 코드
+        
+        ```tsx
+        import { Helmet } from 'react-helmet-async';
+        
+        interface SEOProps {
+          title: string;
+          description: string;
+          image: string;
+        }
+        
+        function SEO({ title, description, image }: SEOProps) {
+          return (
+            <Helmet>
+              <title>{title}</title>
+              <meta name="description" content={description} />
+              <meta property="og:type" content="website" />
+              <meta property="og:title" content={title} />
+              <meta property="og:image" content={image} />
+              <meta property="og:image:width" content="260" />
+              <meta property="og:image:height" content="260" />
+              <meta property="og:description" content={description} />
+              <meta property="og:locale" content="ko_KR" />
+            </Helmet>
+          );
+        }
+        
+        export default SEO;
+        
+        ```
+        
+
+### HOC 이용하여 로딩 처리
+
+- `High Order Component`
+    - 컴포넌트를 인자로 받아 새로운 컴포넌트를 반환하는 함수
+    - 반복되는 공통된 로직들을 HOC로 분리하여 재사용 가능
+    - 코드
+        - useQuery 사용하는 곳에 suspense: true 추가해줘야 함
+        
+        ```tsx
+        import { Suspense, ComponentType, ReactNode } from 'react';
+        
+        function withSuspense<Props = Record<string, never>>(
+          WrappedComponent: ComponentType<Props>,
+          options: { fallback: ReactNode },
+        ) {
+          return (props: Props) => {
+            return (
+              <Suspense fallback={options.fallback}>
+                <WrappedComponent {...(props as any)} />
+              </Suspense>
+            );
+          };
+        }
+        
+        export default withSuspense;
+        ```
+        
+
+### 이미지 lazy loading
+
+- 사용자의 뷰포트 안에 있는 이미지 요소들만 로드할 수 있도록하여 성능 최적화
+- `react-lazy-load-image-component` 라이브러리 사용하여 구현
+
+## Github Actions CI/CD
+
+### Github Actions
+
+- Repository에 대한 이벤트를 이용해서 빌드, 테스트 및 배포 파이프라인을 자동화할 수 있는 CI/CD 플랫폼
+- `CI (Continuous Integration, 지속적 통합)`
+    - 코드를 메인에 merge 요청 ⇒ 검사 (test, lint, build 테스트) ⇒ 통과한 코드만 merge
+- `CD (Continuous Deployment)`
+    - CI 과정을 거친 안정화된 코드를 자동 배포
+
+### CI/CD 설정
+
+- root 디렉토리에 .github/workflows 폴더 생성
+- `ci.yml`
+    - 안정화된 코드인지 테스트 후, merge 가능
+    
+    ```
+    name: CI
+    
+    on: [pull_request]
+    
+    jobs:
+      lint:
+        name: Lint
+        runs-on: ubuntu-latest
+    
+        steps:
+          - uses: actions/checkout@v3
+          - uses: actions/setup-node@v2
+            with:
+              node-version: '18'
+          - run: yarn install
+          - run: yarn lint
+      build:
+        name: Build
+        runs-on: ubuntu-latest
+    
+        steps:
+          - uses: actions/checkout@v3
+          - uses: actions/setup-node@v2
+            with:
+              node-version: '18'
+          - run: yarn install
+          - run: CI='false' yarn build
+    ```
+    
+- `cd.yml`
+    - vercel로 배포하여 자동 배포되도록 설정
+    - github settings에서 vercel 관련 secret key 값 설정
+    
+    ```
+    name: CD
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    on:
+      push:
+        branches:
+          - master
+    jobs:
+      Deploy-Production:
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@v2
+          - name: Install Vercel CLI
+            run: npm install --global vercel@latest
+          - name: Pull Vercel Environment Information
+            run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+          - name: Build Project Artifacts
+            run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+          - name: Deploy Project Artifacts to Vercel
+            run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+    
+    ```
