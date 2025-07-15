@@ -6,6 +6,7 @@ import globalStyles from '@styles/globalStyles';
 import Layout from '@shared/Layout';
 import Navbar from '@shared/Navbar';
 import AuthGuard from '@components/auth/AuthGuard';
+import { AlertContextProvider } from '@contexts/AlertContext';
 
 const client = new QueryClient({});
 
@@ -19,10 +20,12 @@ export default function App({
       <SessionProvider session={session}>
         <QueryClientProvider client={client}>
           <Hydrate state={dehydratedState}>
-            <AuthGuard>
-              <Navbar />
-              <Component {...pageProps} />
-            </AuthGuard>
+            <AlertContextProvider>
+              <AuthGuard>
+                <Navbar />
+                <Component {...pageProps} />
+              </AuthGuard>
+            </AlertContextProvider>
           </Hydrate>
         </QueryClientProvider>
       </SessionProvider>

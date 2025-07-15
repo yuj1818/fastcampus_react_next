@@ -14,7 +14,7 @@ function CardListPage() {
     data,
     hasNextPage = false,
     fetchNextPage,
-    isFetching,
+    isFetchingNextPage,
   } = useInfiniteQuery(['cards'], ({ pageParam }) => getCards(pageParam), {
     getNextPageParam: (snapshot) => {
       return snapshot.lastVisible;
@@ -22,12 +22,12 @@ function CardListPage() {
   });
 
   const loadMore = useCallback(() => {
-    if (hasNextPage === false || isFetching) {
+    if (hasNextPage === false || isFetchingNextPage) {
       return;
     }
 
     fetchNextPage();
-  }, [hasNextPage, fetchNextPage, isFetching]);
+  }, [hasNextPage, fetchNextPage, isFetchingNextPage]);
 
   if (data == null) {
     return null;
