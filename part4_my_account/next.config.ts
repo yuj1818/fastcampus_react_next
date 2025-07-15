@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: '**.iconfinder.com',
       },
+      {
+        protocol: 'https',
+        hostname: '**.googleusercontent.com',
+      },
     ],
   },
 };

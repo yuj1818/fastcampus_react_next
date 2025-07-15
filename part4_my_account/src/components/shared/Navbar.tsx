@@ -1,94 +1,58 @@
 import { css } from '@emotion/react';
-import Flex from '@shared/Flex';
-import { Link, useLocation } from 'react-router-dom';
-import Button from '@shared/Button';
-import { colors } from '@styles/colorPalette';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import { useCallback } from 'react';
-import useUser from '@hooks/auth/useUser';
-import Spacing from './Spacing';
+import Flex from './Flex';
+import Button from './Button';
+import { colors } from '@styles/colorPalette';
 
 function Navbar() {
-  const location = useLocation();
-  const showSignButton =
-    ['/signup', '/signin'].includes(location.pathname) === false;
-
-  const user = useUser();
+  const { data: session } = useSession();
+  const router = useRouter();
+  const showSignButton = ['/auth/signin'].includes(router.pathname) === false;
 
   const renderButton = useCallback(() => {
-    if (user != null) {
+    if (session != null) {
       return (
-        <Flex>
-          <Link to="/my">
-            <img
-              src={
-                user.photoURL ??
-                'https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-128.png'
-              }
-              alt="유저 프로필 이미지"
-              width={40}
-              height={40}
-              style={{ borderRadius: '100%' }}
-            />
-          </Link>
-          <Spacing size={4} direction="horizontal" />
-          <Link to="/settings">
-            <img
-              src="https://cdn1.iconfinder.com/data/icons/ionicons-outline-vol-2/512/settings-outline-64.png"
-              width={40}
-              height={40}
-              alt=""
-            />
-          </Link>
-        </Flex>
+        <Link href="/my">
+          <Image
+            width={40}
+            height={40}
+            alt=""
+            src={session.user?.image ?? ''}
+          />
+        </Link>
       );
     }
 
     if (showSignButton) {
       return (
-        <Link to="/signin">
+        <Link href="/auth/signin">
           <Button>로그인/회원가입</Button>
         </Link>
       );
     }
 
     return null;
-  }, [user, showSignButton]);
+  }, [session]);
 
   return (
-    <Flex justify="space-between" align="center" css={navbarContainerStyles}>
-      <Link to="/">
-        <Logo />
-      </Link>
+    <Flex justify="space-between" align="center" css={navbarStyles}>
+      <Link href="/">MyAccount</Link>
       {renderButton()}
     </Flex>
   );
 }
 
-function Logo() {
-  return (
-    <svg
-      baseProfile="tiny"
-      height="32px"
-      id="Layer_1"
-      version="1.2"
-      viewBox="0 0 24 24"
-      width="32px"
-      fill={colors.blue}
-      xmlSpace="preserve"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path d="M12,3c0,0-6.186,5.34-9.643,8.232C2.154,11.416,2,11.684,2,12c0,0.553,0.447,1,1,1h2v7c0,0.553,0.447,1,1,1h3  c0.553,0,1-0.448,1-1v-4h4v4c0,0.552,0.447,1,1,1h3c0.553,0,1-0.447,1-1v-7h2c0.553,0,1-0.447,1-1c0-0.316-0.154-0.584-0.383-0.768  C18.184,8.34,12,3,12,3z" />
-    </svg>
-  );
-}
-
-const navbarContainerStyles = css`
+const navbarStyles = css`
   padding: 10px 24px;
   position: sticky;
   top: 0;
   background-color: ${colors.white};
   z-index: 10;
-  border-bottom: 1px solid ${colors.gray};
+  border-bottom: 1px solid ${colors.gray100};
 `;
 
 export default Navbar;
