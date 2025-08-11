@@ -36,7 +36,6 @@ function TransactionsPage() {
   const {
     data,
     hasNextPage = false,
-    isFetching,
     fetchNextPage,
   } = useTransactions({ filter: currentFilter });
 

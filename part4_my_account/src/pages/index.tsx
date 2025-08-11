@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext } from 'next';
 import dynamic from 'next/dynamic';
-import { getSession, useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 import { QueryClient, dehydrate } from 'react-query';
 import Account from '@components/home/Account';
 import { BannerSkeleton } from '@components/home/EventBanners';
