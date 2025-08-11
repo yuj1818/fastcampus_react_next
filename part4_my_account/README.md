@@ -270,8 +270,6 @@ npx create-next-app@latest
   }
 
   export async function getServerSideProps() {
-    console.log('getServerSideProps');
-
     const client = new QueryClient();
 
     await client.prefetchInfiniteQuery(['cards'], () => getCards());
@@ -379,7 +377,6 @@ npx create-next-app@latest
   }
 
   export async function getServerSideProps() {
-    console.log('getServerSideProps');
 
     const client = new QueryClient();
 
@@ -558,9 +555,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     ],
     callbacks: {
       session({ session, token }) {
-        console.log('session', session);
-        console.log('token', token);
-
         if (session.user) {
           (session.user as User).id = token.sub as string;
         }

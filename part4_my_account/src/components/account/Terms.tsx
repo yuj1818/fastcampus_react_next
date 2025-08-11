@@ -11,8 +11,6 @@ function Terms({ onNext }: { onNext: (termIds: string[]) => void }) {
   );
 
   const handleAgreement = (id: string, checked: boolean) => {
-    console.log('id', id);
-    console.log('chekced', checked);
     setTermsAgreements((pre) => {
       return pre.map((term) => (term.id === id ? { ...term, checked } : term));
     });

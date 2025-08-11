@@ -28,8 +28,6 @@ const CardList = dynamic(() => import('@components/home/CardList'), {
 export default function Home() {
   const { data } = useSession();
 
-  console.log(data);
-
   return (
     <>
       <EventBanners />

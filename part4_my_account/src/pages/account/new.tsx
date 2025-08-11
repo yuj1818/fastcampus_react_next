@@ -38,8 +38,6 @@ function AccountNewPage({ initialStep }: { initialStep: number }) {
       {step === 1 ? (
         <Form
           onNext={async (formValues) => {
-            console.log(formValues);
-
             const newAccount = {
               ...formValues,
               accountNumber: Date.now(),
