@@ -10,6 +10,7 @@ import Top from '@shared/Top';
 import ListRow from '@shared/ListRow';
 import Flex from '@shared/Flex';
 import Text from '@shared/Text';
+import SEO from '@shared/SEO';
 
 const FixedBottomButton = dynamic(() => import('@shared/FixedBottomButton'), {
   ssr: false,
@@ -36,6 +37,11 @@ function CardDetailPage({ initialCard }: CardDetailPageProps) {
 
   return (
     <div>
+      <SEO
+        title={`${corpName} ${name}`}
+        description={subTitle}
+        image="https://gl.chiikawa-pocket.com/ko/_astro/kv_sp.Cs2DsXBt.png"
+      />
       <Top title={`${corpName} ${name}`} subTitle={subTitle} />
       <ul>
         {benefit.map((text, index) => (
