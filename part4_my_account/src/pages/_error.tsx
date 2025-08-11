@@ -5,7 +5,7 @@ import Flex from '@shared/Flex';
 import Spacing from '@shared/Spacing';
 import Text from '@shared/Text';
 
-function Error({ statusCode }: { statusCode?: number }) {
+function Error() {
   return (
     <div>
       <Spacing size={100} />

@@ -1,9 +1,4 @@
-import React, {
-  forwardRef,
-  InputHTMLAttributes,
-  useEffect,
-  useState,
-} from 'react';
+import React, { forwardRef, InputHTMLAttributes, useState } from 'react';
 import Input from './Input';
 import Text from './Text';
 

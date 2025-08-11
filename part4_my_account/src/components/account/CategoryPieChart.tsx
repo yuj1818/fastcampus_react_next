@@ -38,7 +38,7 @@ function CategoryPieChart({ width, height, chartData }: CategoryPieChartProps) {
       <Group top={top} left={left}>
         <Pie data={chartData} pieValue={getValue} outerRadius={radius}>
           {(pie) => {
-            return pie.arcs.map((arc, index) => {
+            return pie.arcs.map((arc) => {
               const { label, amount } = arc.data;
               const [centroidX, centroidY] = pie.path.centroid(arc);
               const hasSpaceForLabel = arc.endAngle - arc.startAngle >= 0.1;
