@@ -46,7 +46,7 @@ function TransactionsPage() {
     }
 
     fetchNextPage();
-  }, [hasNextPage, isFetching, fetchNextPage]);
+  }, [hasNextPage, fetchNextPage]);
 
   const transactions = data?.pages.map(({ items }) => items).flat() ?? [];
 
