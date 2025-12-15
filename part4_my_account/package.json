@@ -19,7 +19,7 @@
     "date-fns": "^4.1.0",
     "firebase": "^11.10.0",
     "framer-motion": "^12.23.5",
-    "next": "15.3.5",
+    "next": "15.3.8",
     "next-auth": "^4.24.11",
     "react": "^19.0.0",
     "react-day-picker": "^9.8.1",
